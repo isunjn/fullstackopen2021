@@ -6,13 +6,19 @@ const Header = ({ course }) => {
   )
 }
 
+const Part = ({part, exercises}) => {
+  return (
+    <p>{part} {exercises}</p>
+  )
+}
+
 const Content = ({ content }) => {
   return (
-    <>
-      {content.map(c => (
-        <p>{c.part} {c.exercises}</p>
-      ))}
-    </>
+    <div>
+      <Part part={content[0].part} exercises={content[0].exercises}/>
+      <Part part={content[1].part} exercises={content[1].exercises}/>
+      <Part part={content[2].part} exercises={content[2].exercises}/>
+    </div>
   )
 }
 
