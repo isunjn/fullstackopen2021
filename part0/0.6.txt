@@ -1,0 +1,15 @@
+note over browser:
+get user input and generate a new note object
+end note
+
+note over browser:
+add this new note to current DOM
+end note
+
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+
+note over server:
+server save new note
+end note
+
+server-->browser: 201
