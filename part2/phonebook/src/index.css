@@ -1,0 +1,11 @@
+.error {
+  border: 4px red solid;
+  border-radius: 4px;
+  color: red;
+}
+
+.notify {
+  border: 4px green solid;
+  border-radius: 4px;
+  color: green;
+}

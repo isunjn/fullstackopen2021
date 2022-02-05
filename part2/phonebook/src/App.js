@@ -2,6 +2,15 @@ import React, { useState, useEffect } from 'react'
 
 import personService from './services/persons';
 
+const Notification = ({ message }) => {
+  if (message === null) {
+    return null;
+  }
+  return (
+    <div className={message.type}>{message.content}</div>
+  )
+}
+
 const Filter = ({ searchWord, handler }) => {
   return (
     <div>
@@ -43,6 +52,7 @@ const App = () => {
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [searchWord, setSearchWord] = useState('');
+  const [message, setMessage] = useState(null);
 
   useEffect(() => {
     console.log('start fetch');
@@ -69,7 +79,12 @@ const App = () => {
             setPersons(persons.map(p => p.name === newName ? newPerson : p));
             setNewName('');
             setNewNumber('');
-          })
+            setMessage({ type: 'notify', content: `Updated ${newName}` });
+            setTimeout(() => setMessage(null), 5000);
+          }).catch(error => {
+            setMessage({ type: 'error', content: `${newName} has already been removed from server` });
+            setTimeout(() => setMessage(null), 5000);
+          });
         }
         return;
       }
@@ -83,13 +98,15 @@ const App = () => {
       setPersons(persons.concat(newPerson));
       setNewName('');
       setNewNumber('');
+      setMessage({ type: 'notify', content: `Added ${newName}` });
+      setTimeout(() => setMessage(null), 5000);
     });
   }
 
   const handleDelete = id => {
     if (!window.confirm(`Delete ${id} ?`)) return;
     personService.deletePerson(id).then(() => {
-      setPersons(persons.filter(person => person.id !== id ));
+      setPersons(persons.filter(person => person.id !== id));
     });
   }
 
@@ -108,6 +125,7 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
+      <Notification message={message} />
       <Filter searchWord={searchWord} handler={handleSearchWordChange} />
       <h2>Add new</h2>
       <PersonForm
