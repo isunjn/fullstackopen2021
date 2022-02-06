@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack://src/index.css"],"names":[],"mappings":"AAAA,OACE,oBAAqB,CACrB,iBAAkB,CAClB,SACF,CAEA,QACE,sBAAuB,CACvB,iBAAkB,CAClB,WACF","file":"main.1c64af2b.chunk.css","sourcesContent":[".error {\n  border: 4px red solid;\n  border-radius: 4px;\n  color: red;\n}\n\n.notify {\n  border: 4px green solid;\n  border-radius: 4px;\n  color: green;\n}"]}
