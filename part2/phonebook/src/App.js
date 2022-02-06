@@ -82,7 +82,7 @@ const App = () => {
             setMessage({ type: 'notify', content: `Updated ${newName}` });
             setTimeout(() => setMessage(null), 5000);
           }).catch(error => {
-            setMessage({ type: 'error', content: `${newName} has already been removed from server` });
+            setMessage({ type: 'error', content: `Fail to upadte` });
             setTimeout(() => setMessage(null), 5000);
           });
         }
@@ -99,6 +99,9 @@ const App = () => {
       setNewName('');
       setNewNumber('');
       setMessage({ type: 'notify', content: `Added ${newName}` });
+      setTimeout(() => setMessage(null), 5000);
+    }).catch(error => {
+      setMessage({ type: 'error', content: `Person validation failed: ${error.response.data.error}` });
       setTimeout(() => setMessage(null), 5000);
     });
   }
