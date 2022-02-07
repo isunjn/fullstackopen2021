@@ -1,0 +1,13 @@
+POST http://localhost:3001/api/blogs HTTP/1.1
+Content-Type: application/json
+
+{
+  "title": "how to quit vim",
+  "author": "foo",
+  "url": "https://example.com",
+  "likes": 123
+}
+
+
+###
+GET http://localhost:3001/api/blogs HTTP/1.1
