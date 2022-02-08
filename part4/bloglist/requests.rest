@@ -11,3 +11,37 @@ Content-Type: application/json
 
 ###
 GET http://localhost:3001/api/blogs HTTP/1.1
+
+###
+POST http://localhost:3001/api/users HTTP/1.1
+Content-Type: application/json
+
+{
+  "username": "bob",
+  "name": "bob",
+  "password": "123456"
+}
+
+###
+GET http://localhost:3001/api/users
+
+###
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJvYiIsImlkIjoiNjIwMjIxYjA4ZDE5NWMwNTVlZmU0YTczIiwiaWF0IjoxNjQ0MzA3MDYzfQ.GZR3yNfJ8-1bvpl3vGDFJv-b2TYlXRG8_FWm6762Bn8
+
+{
+  "title": "how to quit vim",
+  "author": "foo",
+  "url": "https://example.com",
+  "likes": 123
+}
+
+###
+POST http://localhost:3001/api/login
+Content-Type: application/json
+
+{
+  "username": "bob",
+  "password": "123456"
+}
