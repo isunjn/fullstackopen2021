@@ -15,13 +15,6 @@ const Blog = ({ blog, updateBlog, deleteBlog }) => {
     setShowDetail(!showDetail)
   }
 
-  const justTitle = () => (
-    <div style={blogStyle}>
-      {blog.title}
-      <button onClick={toggleDetail}>view</button>
-    </div>
-  )
-
   const addLike = () => {
     const  newBlog = {
       ...blog,
@@ -35,21 +28,28 @@ const Blog = ({ blog, updateBlog, deleteBlog }) => {
     deleteBlog(blog.id)
   }
 
+  const justTitle = () => (
+    <>
+      {blog.title}
+      <button onClick={toggleDetail} className="viewBtn">view</button>
+    </>
+  )
+
   const withDetail = () => (
-    <div style={blogStyle}>
+    <>
       <p>{blog.title}<button onClick={toggleDetail}>hide</button></p>
-      <p>{blog.url}</p>
-      <p>{blog.likes}<button onClick={addLike}>like</button></p>
+      <p className='url'>{blog.url}</p>
+      <p className='likes'>{blog.likes}<button onClick={addLike} className='likeBtn'>like</button></p>
       <p>{blog.author}</p>
       <button onClick={remove}>remove</button>
-    </div>
+    </>
   )
 
   return (
-    <>
+    <div style={blogStyle} className="oneBlog">
       {!showDetail && justTitle()}
       {showDetail && withDetail()}
-    </>
+    </div>
   )
 }
 
