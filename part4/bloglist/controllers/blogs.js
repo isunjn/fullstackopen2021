@@ -50,9 +50,15 @@ blogsRouter.post('/', async (req, res) => {
 
 blogsRouter.delete('/:id', async (req, res) => {
   const user = req.user
+  if (!user) {
+    return res.status(401).json({ error: 'Unauthorized' })
+  }
+
+  console.log('>>>>>>>>>>>>> user\n', user);
   const blog = await Blog.findById(req.params.id)
+  console.log('>>>>>>>>>>>>> blog\n', blog);
   if (user._id.toString() === blog.user.toString()) {
-    await Blog.remove(blog._id)
+    await Blog.deleteOne(blog._id)
     res.status(204).end()
   } else {
     res.status(400).json({ error: 'invalid token' })
@@ -61,6 +67,17 @@ blogsRouter.delete('/:id', async (req, res) => {
 
 blogsRouter.put('/:id', async (req, res) => {
   const body = req.body
+
+  if (!body.title && !body.url) {
+    res.status(400).end()
+    return
+  }
+  
+  const user = req.user
+
+  if (!user) {
+    return res.status(401).json({ error: 'Unauthorized' })
+  }
   
   const blog = {
     title: body.title,
