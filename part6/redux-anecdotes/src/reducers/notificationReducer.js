@@ -1,6 +1,4 @@
-import { initialState } from "../store"
-
-const notificationReducer = (state = initialState.message, action) => {
+const notificationReducer = (state = '', action) => {
   switch (action.type) {
     case 'SET_NOTIFICATION':
       return action.message
@@ -11,10 +9,13 @@ const notificationReducer = (state = initialState.message, action) => {
   }
 }
 
-export const setNotification = (message) =>  {
-  return {
-    type: 'SET_NOTIFICATION',
-    message
+export const setNotification = (message, lastTime) =>  {
+  return async dispatch => {
+    dispatch({
+      type: 'SET_NOTIFICATION',
+      message
+    })
+    setTimeout(() => dispatch(clearNotificatin()), lastTime * 1000)
   }
 }
 
