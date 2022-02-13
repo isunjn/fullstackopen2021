@@ -1,45 +1,25 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import LoginForm from './components/LoginForm'
-import BlogView from './components/BlogView'
+import LoginForm from "./components/LoginForm";
+import BlogView from "./components/BlogView";
 
-import blogService from './services/blogs'
-import loginService from './services/login'
+import { setUser } from "./reducers/userReducer";
 
 const App = () => {
-  const [user, setUser] = useState(null)
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
 
   useEffect(() => {
-    const loggedBlogappUserJSON = window.localStorage.getItem('loggedBlogappUser')
-    if (loggedBlogappUserJSON) {
-      const user = JSON.parse(loggedBlogappUserJSON)
-      setUser(user)
-      blogService.setToken(user.token)
-    }
-  }, [])
-
-  const login = async (credentials) => {
-    const user = await loginService.login(credentials)
-
-    window.localStorage.setItem(
-      'loggedBlogappUser', JSON.stringify(user)
-    )
-    blogService.setToken(user.token)
-    setUser(user)
-  }
-
-  const logout = async () => {
-    window.localStorage.removeItem('loggedBlogappUser')
-    blogService.removeToken()
-    setUser(null)
-  }
+    dispatch(setUser());
+  }, []);
 
   return (
     <div>
-      {user === null && <LoginForm login={login} />}
-      {user !== null && <BlogView name={user.name} logout={logout} />}
+      {user === null && <LoginForm />}
+      {user !== null && <BlogView />}
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;

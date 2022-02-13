@@ -1,59 +1,42 @@
-import React, { useState } from 'react'
+import React from "react";
+import { useDispatch } from "react-redux";
+import { useField } from "../hooks";
+import Notification from "./Notification";
+import { login } from "../reducers/userReducer";
 
-import Notification from './Notification'
+const LoginForm = () => {
+  const dispatch = useDispatch();
 
-const LoginForm = ({ login }) => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-
-  const [message, setMessage] = useState(null)
+  const username = useField("text", "username");
+  const password = useField("text", "password");
 
   const handleLogin = async (event) => {
-    event.preventDefault()
-    try {
-      login({ username, password })
-      setUsername('')
-      setPassword('')
-    } catch (error) {
-      setMessage({
-        type: 'error',
-        content: `${error.response.data.error}`
-      })
-      setTimeout(() => {
-        setMessage(null)
-      }, 5000)
-    }
-  }
+    event.preventDefault();
+      dispatch(
+        login({
+          username: username.value,
+          password: password.value,
+        })
+      );
+  };
 
   return (
     <>
       <h2>Log in to application</h2>
-      <Notification message={message}/>
+      <Notification />
       <form onSubmit={handleLogin}>
-        <div>
-        username
-          <input
-            id='username'
-            type="text"
-            value={username}
-            name="Username"
-            onChange={({ target }) => setUsername(target.value)}
-          />
-        </div>
-        <div>
-        password
-          <input
-            id='password'
-            type="password"
-            value={password}
-            name="Password"
-            onChange={({ target }) => setPassword(target.value)}
-          />
-        </div>
-        <button type='submit' id='login-button'>login</button>
+        <label htmlFor="username">
+          username: <input id="username" {...username} />
+        </label>
+        <label htmlFor="password">
+          password: <input id="password" {...password} />
+        </label>
+        <button type="submit" id="login-button">
+          login
+        </button>
       </form>
     </>
-  )
-}
+  );
+};
 
-export default LoginForm
+export default LoginForm;
