@@ -1,43 +1,21 @@
-import loginService from "../services/login";
-import blogService from "../services/blogs";
-
+import userService from "../services/users";
 import { setNotification } from "./notificationReducer";
 
-const userReducer = (state = null, action) => {
+const userReducer = (state = [], action) => {
   switch (action.type) {
-    case "SET_USER":
+    case "GET_ALL_USERS":
       return action.data;
-    case "LOGIN_USER":
-      return action.data;
-    case "LOGOUT_USER":
-      return null;
     default:
       return state;
   }
 };
 
-export const setUser = () => {
-  return async (dispatch) => {
-    const loggedUserJSON = window.localStorage.getItem("loggedUser");
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON);
-      blogService.setToken(user.token);
-      dispatch({
-        type: "SET_USER",
-        data: user,
-      });
-    }
-  };
-};
-
-export const login = (credentials) => {
+export const getAllUsers = () => {
   return async (dispatch) => {
     try {
-      const user = await loginService.login(credentials);
-      window.localStorage.setItem("loggedUser", JSON.stringify(user));
-      blogService.setToken(user.token);
+      const user = await userService.getAll();
       dispatch({
-        type: "LOGIN_USER",
+        type: "GET_ALL_USERS",
         data: user,
       });
     } catch (error) {
@@ -46,14 +24,5 @@ export const login = (credentials) => {
   };
 };
 
-export const logout = () => {
-  return async (dispatch) => {
-    window.localStorage.removeItem("loggedUser");
-    blogService.setToken(null);
-    dispatch({
-      type: "LOGOUT_USER",
-    });
-  };
-};
 
 export default userReducer;

@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { useField } from "../hooks";
 import { createNewBlog } from "../reducers/blogReducer";
-
+import Button from "./style/Button";
 const BlogForm = () => {
   const dispatch = useDispatch();
 
@@ -34,9 +34,9 @@ const BlogForm = () => {
         <label htmlFor="url">
           URL: <input {...url} id="url" />
         </label>
-        <button type="submit" id="submitBtn">
+        <Button type="submit" id="submitBtn">
           Create
-        </button>
+        </Button>
       </form>
     </>
   );

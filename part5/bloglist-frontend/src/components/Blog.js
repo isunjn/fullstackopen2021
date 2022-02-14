@@ -1,12 +1,18 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
+import Togglable from "./Togglable";
+import CommentForm from "./CommentForm";
+
+import Button from "./style/Button";
 
 import { updateBlog, deleteBlog } from "../reducers/blogReducer";
+import { getOneComments } from "../reducers/commentReducer";
 
 const Blog = ({ blog }) => {
   const dispatch = useDispatch();
-
-  const [showDetail, setShowDetail] = useState(false);
+  const navigate = useNavigate();
 
   const blogStyle = {
     paddingTop: 10,
@@ -16,9 +22,17 @@ const Blog = ({ blog }) => {
     marginBottom: 5,
   };
 
-  const toggleDetail = () => {
-    setShowDetail(!showDetail);
-  };
+  useEffect(() => {
+    dispatch(getOneComments(blog.id));
+  }, []);
+
+  const comments = useSelector((state) => {
+    console.log("state.comments: ", state.comments);
+    return state.comments.filter((c) => c.blogid === blog.id);
+  }
+  );
+
+  console.log(comments);
 
   const addLike = () => {
     dispatch(
@@ -31,39 +45,32 @@ const Blog = ({ blog }) => {
 
   const remove = () => {
     dispatch(deleteBlog(blog.id));
+    navigate("/blogs");
   };
-
-  const justTitle = () => (
-    <>
-      {blog.title}
-      <button onClick={toggleDetail} className="viewBtn">
-        view
-      </button>
-    </>
-  );
-
-  const withDetail = () => (
-    <>
-      <p>
-        {blog.title}
-        <button onClick={toggleDetail}>hide</button>
-      </p>
-      <p className="url">{blog.url}</p>
-      <p className="likes">
-        {blog.likes}
-        <button onClick={addLike} className="likeBtn">
-          like
-        </button>
-      </p>
-      <p>{blog.author}</p>
-      <button onClick={remove}>remove</button>
-    </>
-  );
 
   return (
     <div style={blogStyle} className="oneBlog">
-      {!showDetail && justTitle()}
-      {showDetail && withDetail()}
+      <p>{blog.title}</p>
+      <p className="url">{blog.url}</p>
+      <p className="likes">
+        {blog.likes}
+        <Button onClick={addLike} className="likeBtn">
+          like
+        </Button>
+      </p>
+      <p>{blog.author}</p>
+      <Button onClick={remove}>remove</Button>
+
+      <Togglable buttonLabel="New comment" >
+          <CommentForm blogid={blog.id}/>
+      </Togglable>
+
+      <div>comments:</div>
+      <ul>
+        {comments.map((comment) => (
+          <li key={comment.id}>{comment.content}</li>
+        ))}
+      </ul>
     </div>
   );
 };
